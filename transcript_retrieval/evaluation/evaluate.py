@@ -4,7 +4,7 @@ from tqdm.auto import tqdm
 from sentence_transformers import util
 
 from .metrics import hit_k, mean_hit_k, average_precision_k, mean_average_precision_k
-from utils.constants import TRANSCRIPT_COL
+from utils.constants import TRANSCRIPT_COL, EDITED_COL
 from utils.helpers import extract_query_from_df
 
 
@@ -37,6 +37,7 @@ class Evaluation:
         self,
         labeled_df,
         model,
+        edited_text = False,
         k_list=[10, 5, 3, 1],
     ):
         """
@@ -46,7 +47,10 @@ class Evaluation:
         query_dict = extract_query_from_df(labeled_df)
 
         print("Embedding context")
-        corpus_embeddings = labeled_df[TRANSCRIPT_COL]
+        if edited_text:
+            corpus_embeddings = labeled_df[EDITED_COL]
+        else:
+            corpus_embeddings = labeled_df[TRANSCRIPT_COL]
 
         start_time = time.time()
         corpus_embeddings = model.encode(

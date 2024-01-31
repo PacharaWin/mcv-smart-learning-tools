@@ -2,6 +2,7 @@
 common/data/*
 free_text_grader/data/*
 transcript_retrieval/data/*
+labeled/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
